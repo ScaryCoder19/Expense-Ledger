@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ledger — Cash Book</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="drawer-overlay" id="drawerOverlay"></div>
+
+<nav class="drawer" id="drawer" aria-hidden="true">
+  <button class="drawer-close" id="drawerClose" aria-label="Close menu">×</button>
+  <span class="drawer-label">Pages</span>
+  <button class="drawer-link active" data-page="ledger" type="button">Ledger</button>
+  <button class="drawer-link" data-page="insights" type="button">Insights</button>
+</nav>
+
+<div class="ledger-page">
+
+  <header class="cover">
+    <button class="hamburger" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="cover-text">
+      <h1>Ledger</h1>
+      <p class="cover-sub">a small cash book, kept by hand</p>
+    </div>
+  </header>
+
+  <section class="totals-strip">
+    <div class="total-item">
+      <span class="t-label">Income</span>
+      <span class="t-value credit" id="totalIncome">₹0.00</span>
+    </div>
+    <div class="divider" aria-hidden="true"></div>
+    <div class="total-item">
+      <span class="t-label">Expenses</span>
+      <span class="t-value debit" id="totalExpense">₹0.00</span>
+    </div>
+    <div class="divider" aria-hidden="true"></div>
+    <div class="total-item">
+      <span class="t-label">Balance</span>
+      <span class="t-value" id="totalBalance">₹0.00</span>
+    </div>
+  </section>
+
+  <section class="period-bar">
+    <div class="chip-row wrap" id="periodChips"></div>
+    <div class="period-nav">
+      <button type="button" id="prevPeriod" class="nav-btn" aria-label="Previous period">‹</button>
+      <span class="period-label" id="periodLabel">All time</span>
+      <button type="button" id="nextPeriod" class="nav-btn" aria-label="Next period">›</button>
+    </div>
+  </section>
+
+  <!-- ================= LEDGER PAGE ================= -->
+  <div class="page active" data-page="ledger">
+    <div class="workspace">
+
+      <section class="entry-slip">
+        <h2>New entry</h2>
+        <form id="txnForm">
+          <input type="text" id="desc" placeholder="What was it for?" autocomplete="off" required />
+
+          <div class="field-row">
+            <input type="number" id="amount" placeholder="Amount" min="0.01" step="0.01" required />
+            <input type="date" id="date" required />
+          </div>
+
+          <div class="field-group">
+            <span class="field-label">Debit or credit</span>
+            <div class="chip-row" id="typeChips"></div>
+          </div>
+
+          <div class="field-group">
+            <span class="field-label">Category</span>
+            <div class="chip-row wrap" id="categoryChips"></div>
+          </div>
+
+          <button type="submit" class="record-btn">Record entry</button>
+        </form>
+      </section>
+
+      <section class="entries">
+        <div class="entries-head">
+          <h2>Entries</h2>
+        </div>
+        <div class="chip-row wrap" id="filterChips"></div>
+        <div class="entries-scroll" id="entriesScroll">
+          <div class="ruled-list" id="txnList"></div>
+        </div>
+        <p class="empty-note" id="listEmpty">No entries yet — record one above.</p>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- ================= INSIGHTS PAGE ================= -->
+  <div class="page" data-page="insights">
+
+    <section class="category-panel">
+      <h2>By category</h2>
+      <div class="pie-wrap">
+        <svg id="pieChart" class="pie-svg" viewBox="0 0 200 200"></svg>
+        <div class="pie-legend" id="pieLegend"></div>
+      </div>
+      <p class="empty-note" id="pieEmpty">Nothing recorded yet.</p>
+    </section>
+
+    <section class="activity">
+      <h2>Activity</h2>
+      <div class="activity-chart" id="activityChart"></div>
+      <p class="empty-note" id="activityEmpty">Nothing to show for this period.</p>
+      <div class="activity-legend">
+        <span><i class="legend-dot credit"></i>Income</span>
+        <span><i class="legend-dot debit"></i>Expense</span>
+      </div>
+    </section>
+
+    <section class="export-panel">
+      <h2>Export</h2>
+      <p class="export-sub">Downloads the balance sheet for the period selected above.</p>
+      <div class="export-buttons">
+        <button type="button" id="exportExcel" class="export-btn">Export Excel</button>
+        <button type="button" id="exportPdf" class="export-btn">Export PDF</button>
+      </div>
+    </section>
+
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
